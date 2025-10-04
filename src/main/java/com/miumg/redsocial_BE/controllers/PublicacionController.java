@@ -1,12 +1,10 @@
 package com.miumg.redsocial_BE.controllers;
 
+import com.miumg.redsocial_BE.dtos.CommentWithUserDTO;
 import com.miumg.redsocial_BE.dtos.PublicacionCommentDTO;
 import com.miumg.redsocial_BE.dtos.PublicacionDTO;
 import com.miumg.redsocial_BE.dtos.PublicacionLikeDTO;
-import com.miumg.redsocial_BE.models.Publicacion;
-import com.miumg.redsocial_BE.models.PublicacionComment;
-import com.miumg.redsocial_BE.models.PublicacionLike;
-import com.miumg.redsocial_BE.models.Usuario;
+import com.miumg.redsocial_BE.models.*;
 import com.miumg.redsocial_BE.services.PublicacionCommentService;
 import com.miumg.redsocial_BE.services.PublicacionLikeService;
 import com.miumg.redsocial_BE.services.PublicacionService;
@@ -46,6 +44,11 @@ public class PublicacionController {
         return this.publicacionService.getById(id);
     }
 
+    @GetMapping("/search")
+    public List<Publicacion> searchAdmin(@RequestParam String description) {
+        return publicacionService.searchByDescription(description);
+    }
+
     @PostMapping("")
     public Publicacion savePublicacion(@RequestBody PublicacionDTO dto) {
         Publicacion publicacion = new Publicacion();
@@ -80,7 +83,6 @@ public class PublicacionController {
     public long getLikeCount(@PathVariable Integer id) {
         return publicacionService.getLikeCount(id);
     }
-
     @GetMapping("likes/total")
     public long getTotalLikes() {
         return publicacionService.getAllLikes();
@@ -102,7 +104,6 @@ public class PublicacionController {
         }
     }
 
-
     @PostMapping("/comment")
     public PublicacionComment saveLike(@RequestBody PublicacionCommentDTO dto) {
         PublicacionComment commentPost = new PublicacionComment();
@@ -118,9 +119,19 @@ public class PublicacionController {
         return publicacionCommentService.saveComment(commentPost);
     }
 
-
     @GetMapping("/{id}/comment")
-    public List<PublicacionComment> getComments(@PathVariable Integer id) {
-        return this.publicacionCommentService.getCommentsByPublicacionId(id);
+    public List<CommentWithUserDTO> getComments(@PathVariable Integer id) {
+        return publicacionCommentService.getCommentsByPublicacionId(id);
     }
+
+    @DeleteMapping(path = "/{id}/comment")
+    public String deleteCommentById(@PathVariable("id") Integer id){
+        boolean ok = this.publicacionCommentService.deleteComment(id);
+        if (ok){
+            return "Comentario eliminado";
+        }else{
+            return "Error en la eliminación";
+        }
+    }
+
 }

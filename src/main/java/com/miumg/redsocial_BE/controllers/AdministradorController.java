@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -36,6 +37,12 @@ public class AdministradorController {
     public Optional<Administrador> getById(@PathVariable Integer id){
         return this.administradorService.getById(id);
     }
+
+    @GetMapping("/search")
+    public List<Administrador> searchAdmin(@RequestParam String username) {
+        return administradorService.searchAdmin(username);
+    }
+
 
     @PostMapping("")
     public Administrador saveAdministrador(@RequestBody Administrador usuario){

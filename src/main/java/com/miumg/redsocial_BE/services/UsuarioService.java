@@ -9,6 +9,7 @@ import com.miumg.redsocial_BE.repositories.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -42,6 +43,17 @@ public class UsuarioService {
 
     public Optional<Usuario> getById(Integer id){
         return usuarioRepository.findById(id);
+    }
+
+    public List<Usuario> searchUser(String searchText) {
+        List<Usuario> result = new ArrayList<>();
+
+        result.addAll(usuarioRepository.findByUsernameContainingIgnoreCase(searchText));
+        result.addAll(usuarioRepository.findByNameContainingIgnoreCase(searchText));
+
+        return result.stream()
+                .distinct()
+                .toList();
     }
 
     public Usuario saveUsuario(UsuarioDTO usuarioDTO){

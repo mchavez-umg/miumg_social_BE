@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -26,6 +27,11 @@ public class AdministradorService {
     public ArrayList<Administrador> getAdministrador(){
         return (ArrayList<Administrador>) administradorRepository.findAll();
     }
+
+    public List<Administrador> searchAdmin(String searchText) {
+        return administradorRepository.findByUsernameContainingIgnoreCase(searchText);
+    }
+
 
     public Optional<Administrador> getById(Integer id){
         return administradorRepository.findById(id);
