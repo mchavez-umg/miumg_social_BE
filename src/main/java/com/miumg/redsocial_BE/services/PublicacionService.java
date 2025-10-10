@@ -1,8 +1,9 @@
 package com.miumg.redsocial_BE.services;
 
-import com.miumg.redsocial_BE.dtos.PublicacionDTO;
+import com.miumg.redsocial_BE.dtos.*;
 import com.miumg.redsocial_BE.models.Publicacion;
 
+import com.miumg.redsocial_BE.repositories.PublicacionCommentRepository;
 import com.miumg.redsocial_BE.repositories.PublicacionLikeRepository;
 import com.miumg.redsocial_BE.repositories.PublicacionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PublicacionService {
@@ -18,17 +20,58 @@ public class PublicacionService {
     PublicacionRepository publicacionRepository;
     @Autowired
     PublicacionLikeRepository publicacionLikeRepository;
+    @Autowired
+    PublicacionCommentRepository publicacionCommentRepository;
+    @Autowired
+    PublicacionCommentService publicacionCommentService;
 
-    public ArrayList<Publicacion> getPublicacion(){
-        return (ArrayList<Publicacion>) publicacionRepository.findAll();
+    public List<PublicacionResponseDTO> getPublicaciones() {
+        return publicacionRepository.findAll()
+                .stream()
+                .map(pub -> {
+                    long likeCount = publicacionLikeRepository.countByPublicacion_Id(pub.getId());
+                    long commentsCount = publicacionCommentRepository.countByPublicacion_Id(pub.getId());
+                    List<CommentWithUserDTO> comments = publicacionCommentService.getCommentsByPublicacionId(pub.getId());
+
+                    return new PublicacionResponseDTO(
+                            pub.getId(),
+                            pub.getDescription(),
+                            pub.getImage(),
+                            pub.getPublicationDate(),
+                            new UsuarioAmigoDTO(pub.getUsuario()), // Asegúrate de tener el constructor Usuario -> DTO
+                            likeCount,
+                            commentsCount,
+                            comments
+                    );
+                })
+                .collect(Collectors.toList());
     }
+
 
     public Optional<Publicacion> getById(Integer id){
         return publicacionRepository.findById(id);
     }
 
-    public List<Publicacion> getByUsuarioId(Integer id){
-        return publicacionRepository.findByUsuario_Id(id);
+    public List<PublicacionResponseDTO> getPublicacionesByUsuarioId(Integer usuarioId) {
+        return publicacionRepository.findByUsuario_Id(usuarioId)
+                .stream()
+                .map(pub -> {
+                    long likeCount = publicacionLikeRepository.countByPublicacion_Id(pub.getId());
+                    long commentsCount = publicacionCommentRepository.countByPublicacion_Id(pub.getId());
+                    List<CommentWithUserDTO> comments = publicacionCommentService.getCommentsByPublicacionId(pub.getId());
+
+                    return new PublicacionResponseDTO(
+                            pub.getId(),
+                            pub.getDescription(),
+                            pub.getImage(),
+                            pub.getPublicationDate(),
+                            new UsuarioAmigoDTO(pub.getUsuario()),
+                            likeCount,
+                            commentsCount,
+                            comments
+                    );
+                })
+                .toList();
     }
 
     public List<Publicacion> searchByDescription(String description){

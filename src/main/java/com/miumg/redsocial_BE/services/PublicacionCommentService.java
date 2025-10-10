@@ -14,6 +14,10 @@ public class PublicacionCommentService {
     @Autowired
     private PublicacionCommentRepository publicacionCommentRepository;
 
+    public long getCountCommentByPost(Integer publicacionId) {
+        return publicacionCommentRepository.countByPublicacion_Id(publicacionId);
+    }
+
     public PublicacionComment saveComment(PublicacionComment publicacionComment) {
         return publicacionCommentRepository.save(publicacionComment);
     }
@@ -25,7 +29,6 @@ public class PublicacionCommentService {
                     CommentWithUserDTO dto = new CommentWithUserDTO();
                     dto.setId(c.getId());
                     dto.setUsuario(new UsuarioAmigoDTO(
-                            c.getUsuario().getId(),
                             c.getUsuario().getUsername(),
                             c.getUsuario().getEmail(),
                             c.getUsuario().getName()

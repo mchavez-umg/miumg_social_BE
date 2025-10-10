@@ -1,5 +1,6 @@
 package com.miumg.redsocial_BE.dtos;
 
+import com.miumg.redsocial_BE.models.Usuario;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,8 +9,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UsuarioAmigoDTO {
-    private Integer id;
     private String username;
     private String email;
     private String name;
+
+    public UsuarioAmigoDTO(Usuario usuario) {
+        this.username = usuario.getUsername();
+        this.email = usuario.getEmail();
+        this.name = usuario.getName();
+    }
 }

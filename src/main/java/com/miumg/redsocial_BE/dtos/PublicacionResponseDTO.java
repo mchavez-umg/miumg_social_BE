@@ -5,13 +5,18 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CommentWithUserDTO {
+public class PublicacionResponseDTO {
     private Integer id;
     private String description;
+    private String image;
+    private LocalDateTime publicationDate;
     private UsuarioAmigoDTO usuario;
-    private LocalDateTime commentDate;
+    private long likeCount;
+    private long commentCount;
+    private List<CommentWithUserDTO> comments;
 }

@@ -25,10 +25,24 @@ public class UsuarioService {
 
     private static final Integer STATUS_ACEPTADO = 2;
 
-    public Optional<Integer> authenticateUser(String username, String password) {
-        return usuarioRepository.findByUsername(username)
-                .filter(user -> user.getPassword().equals(password) && user.getStatus() == 1)
-                .map(Usuario::getId);
+    public String authenticateUser(String username, String password) {
+        Optional<Usuario> userOpt = usuarioRepository.findByUsername(username);
+
+        if (userOpt.isEmpty()) {
+            return "USER_NOT_FOUND";
+        }
+
+        Usuario user = userOpt.get();
+
+        if (!user.getPassword().equals(password)) {
+            return "INVALID_PASSWORD";
+        }
+
+        if (user.getStatus() == 0) {
+            return "USER_DENIED";
+        }
+
+        return "AUTH_SUCCESS_" + user.getId();
     }
 
     public List<UsuarioResponseDTO> getUsuarios() {
@@ -66,6 +80,7 @@ public class UsuarioService {
     public Usuario updateByID(UsuarioDTO usuarioDTO, Integer id ){
         Usuario usuario = usuarioRepository.findById(id).get();
         usuario.setUsername(usuarioDTO.getUsername());
+        usuario.setPassword(usuarioDTO.getPassword());
         usuario.setEmail(usuarioDTO.getEmail());
         usuario.setName(usuarioDTO.getName());
         usuario.setStatus(usuarioDTO.getStatus());
@@ -93,13 +108,11 @@ public class UsuarioService {
 
         return Stream.concat(
                         comoRemitente.stream().map(s -> new UsuarioAmigoDTO(
-                                s.getUsuarioDestinatario().getId(),
                                 s.getUsuarioDestinatario().getUsername(),
                                 s.getUsuarioDestinatario().getEmail(),
                                 s.getUsuarioDestinatario().getName()
                         )),
                         comoDestinatario.stream().map(s -> new UsuarioAmigoDTO(
-                                s.getUsuarioRemitente().getId(),
                                 s.getUsuarioRemitente().getUsername(),
                                 s.getUsuarioRemitente().getEmail(),
                                 s.getUsuarioRemitente().getName()

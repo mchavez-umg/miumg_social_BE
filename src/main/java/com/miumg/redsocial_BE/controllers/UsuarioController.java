@@ -23,14 +23,18 @@ public class UsuarioController {
 
     @PostMapping("/authenticate")
     public ResponseEntity<?> authenticate(@RequestBody UsuarioDTO usuarioDTO) {
-        Optional<Integer> userId = usuarioService.authenticateUser(usuarioDTO.getUsername(), usuarioDTO.getPassword());
+        String result = usuarioService.authenticateUser(usuarioDTO.getUsername(), usuarioDTO.getPassword());
 
-        if (userId.isPresent()) {
-            return ResponseEntity.ok().body(Map.of("userId", userId.get()));
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(Map.of("error", "Invalid username or password"));
-        }
+        return switch (result) {
+            case "USER_NOT_FOUND", "INVALID_PASSWORD" -> ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("error", "Usuario o contraseña incorrectos"));
+            case "USER_DENIED" -> ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(Map.of("error", "Tu cuenta ha sido desactivada. Contacta al administrador."));
+            default -> {
+                Integer userId = Integer.parseInt(result.replace("AUTH_SUCCESS_", ""));
+                yield ResponseEntity.ok(Map.of("userId", userId));
+            }
+        };
     }
 
     @GetMapping()

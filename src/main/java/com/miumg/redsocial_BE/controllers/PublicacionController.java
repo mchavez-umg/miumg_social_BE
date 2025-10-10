@@ -1,9 +1,6 @@
 package com.miumg.redsocial_BE.controllers;
 
-import com.miumg.redsocial_BE.dtos.CommentWithUserDTO;
-import com.miumg.redsocial_BE.dtos.PublicacionCommentDTO;
-import com.miumg.redsocial_BE.dtos.PublicacionDTO;
-import com.miumg.redsocial_BE.dtos.PublicacionLikeDTO;
+import com.miumg.redsocial_BE.dtos.*;
 import com.miumg.redsocial_BE.models.*;
 import com.miumg.redsocial_BE.services.PublicacionCommentService;
 import com.miumg.redsocial_BE.services.PublicacionLikeService;
@@ -35,8 +32,8 @@ public class PublicacionController {
     private PublicacionCommentService publicacionCommentService;
 
     @GetMapping()
-    public ArrayList<Publicacion> getPublicaciones(){
-        return this.publicacionService.getPublicacion();
+    public List<PublicacionResponseDTO> getPublicaciones(){
+        return this.publicacionService.getPublicaciones();
     }
 
     @GetMapping(path = "/{id}")
@@ -45,8 +42,8 @@ public class PublicacionController {
     }
 
     @GetMapping(path = "/user/{id}")
-    public List<Publicacion> getPublicacionByUsuarioId(@PathVariable Integer id){
-        return this.publicacionService.getByUsuarioId(id);
+    public List<PublicacionResponseDTO> getPublicacionByUsuarioId(@PathVariable Integer id){
+        return this.publicacionService.getPublicacionesByUsuarioId(id);
     }
 
     @GetMapping("/search")
@@ -88,6 +85,12 @@ public class PublicacionController {
     public long getLikeCount(@PathVariable Integer id) {
         return publicacionService.getLikeCount(id);
     }
+
+    @GetMapping("/{id}/comments/count")
+    public long getCommentsCount(@PathVariable Integer id) {
+        return publicacionCommentService.getCountCommentByPost(id);
+    }
+
     @GetMapping("likes/total")
     public long getTotalLikes() {
         return publicacionService.getAllLikes();
