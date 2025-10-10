@@ -27,6 +27,10 @@ public class PublicacionService {
         return publicacionRepository.findById(id);
     }
 
+    public List<Publicacion> getByUsuarioId(Integer id){
+        return publicacionRepository.findByUsuario_Id(id);
+    }
+
     public List<Publicacion> searchByDescription(String description){
         return publicacionRepository.findByDescriptionContainingIgnoreCase(description);
     }

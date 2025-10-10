@@ -35,17 +35,22 @@ public class PublicacionController {
     private PublicacionCommentService publicacionCommentService;
 
     @GetMapping()
-    public ArrayList<Publicacion> getPublicacion(){
+    public ArrayList<Publicacion> getPublicaciones(){
         return this.publicacionService.getPublicacion();
     }
 
     @GetMapping(path = "/{id}")
-    public Optional<Publicacion> getById(@PathVariable Integer id){
+    public Optional<Publicacion> getPublicacionById(@PathVariable Integer id){
         return this.publicacionService.getById(id);
     }
 
+    @GetMapping(path = "/user/{id}")
+    public List<Publicacion> getPublicacionByUsuarioId(@PathVariable Integer id){
+        return this.publicacionService.getByUsuarioId(id);
+    }
+
     @GetMapping("/search")
-    public List<Publicacion> searchAdmin(@RequestParam String description) {
+    public List<Publicacion> searchPost(@RequestParam String description) {
         return publicacionService.searchByDescription(description);
     }
 
@@ -105,7 +110,7 @@ public class PublicacionController {
     }
 
     @PostMapping("/comment")
-    public PublicacionComment saveLike(@RequestBody PublicacionCommentDTO dto) {
+    public PublicacionComment saveComment(@RequestBody PublicacionCommentDTO dto) {
         PublicacionComment commentPost = new PublicacionComment();
         commentPost.setCommentDate(LocalDateTime.now());
         Usuario usuario = usuarioService.getById(dto.getUserId())

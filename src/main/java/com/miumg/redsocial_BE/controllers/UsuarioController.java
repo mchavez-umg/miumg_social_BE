@@ -3,7 +3,6 @@ package com.miumg.redsocial_BE.controllers;
 import com.miumg.redsocial_BE.dtos.UsuarioAmigoDTO;
 import com.miumg.redsocial_BE.dtos.UsuarioDTO;
 import com.miumg.redsocial_BE.dtos.UsuarioResponseDTO;
-import com.miumg.redsocial_BE.models.Administrador;
 import com.miumg.redsocial_BE.models.Usuario;
 import com.miumg.redsocial_BE.services.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-;
 
 @RestController
 @RequestMapping("/api/usuario")
