@@ -25,13 +25,10 @@ public class UsuarioService {
 
     private static final Integer STATUS_ACEPTADO = 2;
 
-    public boolean authenticateUser(String username, String password) {
-        Optional<Usuario> userOpt = usuarioRepository.findByUsername(username);
-        if (userOpt.isPresent()) {
-            Usuario user = userOpt.get();
-            return user.getPassword().equals(password);
-        }
-        return false;
+    public Optional<Integer> authenticateUser(String username, String password) {
+        return usuarioRepository.findByUsername(username)
+                .filter(user -> user.getPassword().equals(password) && user.getStatus() == 1)
+                .map(Usuario::getId);
     }
 
     public List<UsuarioResponseDTO> getUsuarios() {

@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 ;
 
 @RestController
@@ -22,12 +24,14 @@ public class UsuarioController {
     private UsuarioService usuarioService;
 
     @PostMapping("/authenticate")
-    public ResponseEntity<String> authenticate(@RequestBody UsuarioDTO usuarioDTO) {
-        boolean isAuthenticated = usuarioService.authenticateUser(usuarioDTO.getUsername(), usuarioDTO.getPassword());
-        if (isAuthenticated) {
-            return ResponseEntity.ok().body("Login successful");
+    public ResponseEntity<?> authenticate(@RequestBody UsuarioDTO usuarioDTO) {
+        Optional<Integer> userId = usuarioService.authenticateUser(usuarioDTO.getUsername(), usuarioDTO.getPassword());
+
+        if (userId.isPresent()) {
+            return ResponseEntity.ok().body(Map.of("userId", userId.get()));
         } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("error", "Invalid username or password"));
         }
     }
 
