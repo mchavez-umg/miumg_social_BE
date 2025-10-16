@@ -1,5 +1,6 @@
 package com.miumg.redsocial_BE.controllers;
 
+import com.miumg.redsocial_BE.dtos.ReponseSolicitudAmistadDTO;
 import com.miumg.redsocial_BE.dtos.SolicitudAmistadDTO;
 import com.miumg.redsocial_BE.models.EstadoSolicitudAmistad;
 import com.miumg.redsocial_BE.models.Publicacion;
@@ -36,7 +37,7 @@ public class SolicitudAmistadController {
         Usuario destinatario = usuarioService.getById(userId)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
-        List<SolicitudAmistadDTO> solicitudes = solicitudAmistadService.getSolicitudesRecibidas(destinatario);
+        List<ReponseSolicitudAmistadDTO> solicitudes = solicitudAmistadService.getSolicitudesRecibidas(destinatario);
 
         return ResponseEntity.ok(solicitudes);
     }

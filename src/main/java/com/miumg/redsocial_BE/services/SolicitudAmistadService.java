@@ -1,6 +1,8 @@
 package com.miumg.redsocial_BE.services;
 
+import com.miumg.redsocial_BE.dtos.ReponseSolicitudAmistadDTO;
 import com.miumg.redsocial_BE.dtos.SolicitudAmistadDTO;
+import com.miumg.redsocial_BE.dtos.UsuarioAmigoDTO;
 import com.miumg.redsocial_BE.models.EstadoSolicitudAmistad;
 import com.miumg.redsocial_BE.models.SolicitudAmistad;
 import com.miumg.redsocial_BE.models.Usuario;
@@ -32,12 +34,17 @@ public class SolicitudAmistadService {
                 .collect(Collectors.toList());
     }
 
-    public List<SolicitudAmistadDTO> getSolicitudesRecibidas(Usuario destinatario) {
+    public List<ReponseSolicitudAmistadDTO> getSolicitudesRecibidas(Usuario destinatario) {
         return solicitudAmistadRepository.findByUsuarioDestinatario(destinatario)
                 .stream()
-                .map(s -> new SolicitudAmistadDTO(
+                .map(s -> new ReponseSolicitudAmistadDTO(
                         s.getId(),
-                        s.getUsuarioRemitente().getId(),
+                        new UsuarioAmigoDTO(
+                                s.getUsuarioRemitente().getId(),
+                                s.getUsuarioRemitente().getUsername(),
+                                s.getUsuarioRemitente().getEmail(),
+                                s.getUsuarioRemitente().getName()
+                        ),
                         s.getUsuarioDestinatario().getId(),
                         s.getStatus().getId()))
                 .collect(Collectors.toList());
