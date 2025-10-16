@@ -49,7 +49,7 @@ public class UsuarioController {
     }
 
     @GetMapping("/search")
-    public List<Usuario> searchAdmin(@RequestParam String username) {
+    public List<UsuarioAmigoDTO> searchUsers(@RequestParam String username) {
         return usuarioService.searchUser(username);
     }
 

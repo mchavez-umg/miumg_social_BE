@@ -56,7 +56,7 @@ public class UsuarioService {
         return usuarioRepository.findById(id);
     }
 
-    public List<Usuario> searchUser(String searchText) {
+    public List<UsuarioAmigoDTO> searchUser(String searchText) {
         List<Usuario> result = new ArrayList<>();
 
         result.addAll(usuarioRepository.findByUsernameContainingIgnoreCase(searchText));
@@ -64,6 +64,12 @@ public class UsuarioService {
 
         return result.stream()
                 .distinct()
+                .map(u -> new UsuarioAmigoDTO(
+                        u.getId(),
+                        u.getUsername(),
+                        u.getEmail(),
+                        u.getName()
+                ))
                 .toList();
     }
 
