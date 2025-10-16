@@ -18,8 +18,8 @@ public interface SolicitudAmistadRepository extends JpaRepository<SolicitudAmist
             Integer destinatarioId,
             Integer statusId
     );
-    //Encontrar solicitudes para aceptar o rechazar
-    List<SolicitudAmistad> findByUsuarioDestinatario(Usuario usuarioDestinatario);
+
+    List<SolicitudAmistad> findByUsuarioDestinatarioAndStatusId(Usuario usuarioDestinatario, Integer statusId);
     // Solicitudes aceptadas donde soy destinatario
     List<SolicitudAmistad> findByUsuarioDestinatarioIdAndStatusId(Integer destinatarioId, Integer statusId);
     // Solicitudes aceptadas donde soy remitente

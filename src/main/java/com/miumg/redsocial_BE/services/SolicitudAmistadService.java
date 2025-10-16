@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class SolicitudAmistadService {
+
     @Autowired
     private SolicitudAmistadRepository solicitudAmistadRepository;
 
@@ -35,7 +36,9 @@ public class SolicitudAmistadService {
     }
 
     public List<ReponseSolicitudAmistadDTO> getSolicitudesRecibidas(Usuario destinatario) {
-        return solicitudAmistadRepository.findByUsuarioDestinatario(destinatario)
+        int STATUS_PENDIENTE = 1;
+
+        return solicitudAmistadRepository.findByUsuarioDestinatarioAndStatusId(destinatario, STATUS_PENDIENTE)
                 .stream()
                 .map(s -> new ReponseSolicitudAmistadDTO(
                         s.getId(),
