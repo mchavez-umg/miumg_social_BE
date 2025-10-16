@@ -108,11 +108,13 @@ public class UsuarioService {
 
         return Stream.concat(
                         comoRemitente.stream().map(s -> new UsuarioAmigoDTO(
+                                s.getUsuarioDestinatario().getId(),
                                 s.getUsuarioDestinatario().getUsername(),
                                 s.getUsuarioDestinatario().getEmail(),
                                 s.getUsuarioDestinatario().getName()
                         )),
                         comoDestinatario.stream().map(s -> new UsuarioAmigoDTO(
+                                s.getUsuarioRemitente().getId(),
                                 s.getUsuarioRemitente().getUsername(),
                                 s.getUsuarioRemitente().getEmail(),
                                 s.getUsuarioRemitente().getName()

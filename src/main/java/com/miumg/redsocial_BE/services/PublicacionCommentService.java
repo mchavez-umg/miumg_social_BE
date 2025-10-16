@@ -29,6 +29,7 @@ public class PublicacionCommentService {
                     CommentWithUserDTO dto = new CommentWithUserDTO();
                     dto.setId(c.getId());
                     dto.setUsuario(new UsuarioAmigoDTO(
+                            c.getUsuario().getId(),
                             c.getUsuario().getUsername(),
                             c.getUsuario().getEmail(),
                             c.getUsuario().getName()

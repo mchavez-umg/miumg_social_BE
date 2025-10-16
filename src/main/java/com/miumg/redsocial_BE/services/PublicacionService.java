@@ -38,7 +38,7 @@ public class PublicacionService {
                             pub.getDescription(),
                             pub.getImage(),
                             pub.getPublicationDate(),
-                            new UsuarioAmigoDTO(pub.getUsuario()), // Asegúrate de tener el constructor Usuario -> DTO
+                            new UsuarioAmigoDTO(pub.getUsuario()),
                             likeCount,
                             commentsCount,
                             comments
@@ -46,7 +46,6 @@ public class PublicacionService {
                 })
                 .collect(Collectors.toList());
     }
-
 
     public Optional<Publicacion> getById(Integer id){
         return publicacionRepository.findById(id);
