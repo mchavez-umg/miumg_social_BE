@@ -61,6 +61,7 @@ public class UsuarioService {
 
         result.addAll(usuarioRepository.findByUsernameContainingIgnoreCase(searchText));
         result.addAll(usuarioRepository.findByNameContainingIgnoreCase(searchText));
+        result.addAll(usuarioRepository.findByEmailContainingIgnoreCase(searchText));
 
         return result.stream()
                 .distinct()
