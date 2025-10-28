@@ -132,6 +132,11 @@ public class PublicacionController {
         return publicacionCommentService.getCommentsByPublicacionId(id);
     }
 
+    @GetMapping("/{id}/infoLikes")
+    public List<PublicacionUsersLikeDTO> getInfoUsersLikes(@PathVariable Integer id) {
+        return publicacionService.getLikesByPublicacionId(id);
+    }
+
     @DeleteMapping(path = "/{id}/comment")
     public String deleteCommentById(@PathVariable("id") Integer id){
         boolean ok = this.publicacionCommentService.deleteComment(id);

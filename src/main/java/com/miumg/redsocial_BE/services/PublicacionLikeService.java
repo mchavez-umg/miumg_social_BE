@@ -1,6 +1,5 @@
 package com.miumg.redsocial_BE.services;
-
-
+import com.miumg.redsocial_BE.dtos.UsuarioAmigoDTO;
 import com.miumg.redsocial_BE.models.Publicacion;
 import com.miumg.redsocial_BE.models.PublicacionLike;
 import com.miumg.redsocial_BE.models.Usuario;
@@ -9,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -30,6 +30,10 @@ public class PublicacionLikeService {
             newLike.setLikedDate(LocalDateTime.now());
             return publicacionLikeRepository.save(newLike);
         }
+    }
+
+    public List<PublicacionLike> getInfoUsersByPublicacionId(Integer id){
+        return publicacionLikeRepository.findByPublicacion_Id(id);
     }
 
 }

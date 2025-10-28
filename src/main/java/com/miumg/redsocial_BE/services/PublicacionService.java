@@ -3,6 +3,7 @@ package com.miumg.redsocial_BE.services;
 import com.miumg.redsocial_BE.dtos.*;
 import com.miumg.redsocial_BE.models.Publicacion;
 
+import com.miumg.redsocial_BE.models.PublicacionLike;
 import com.miumg.redsocial_BE.repositories.PublicacionCommentRepository;
 import com.miumg.redsocial_BE.repositories.PublicacionLikeRepository;
 import com.miumg.redsocial_BE.repositories.PublicacionRepository;
@@ -24,6 +25,8 @@ public class PublicacionService {
     PublicacionCommentRepository publicacionCommentRepository;
     @Autowired
     PublicacionCommentService publicacionCommentService;
+    @Autowired
+    private PublicacionLikeService publicacionLikeService;
 
     public List<PublicacionResponseDTO> getPublicaciones() {
         return publicacionRepository.findAll()
@@ -104,6 +107,21 @@ public class PublicacionService {
 
     public long getAllLikes() {
         return publicacionLikeRepository.count();
+    }
+
+    public List<PublicacionUsersLikeDTO> getLikesByPublicacionId(Integer publicacionId) {
+        List<PublicacionLike> likes = publicacionLikeService.getInfoUsersByPublicacionId(publicacionId);
+
+        return likes.stream()
+                .map(like -> new PublicacionUsersLikeDTO(
+                        like.getId(),
+                        like.getLikedDate(),
+                        like.getUsuario().getId(),
+                        like.getUsuario().getUsername(),
+                        like.getUsuario().getName(),
+                        like.getUsuario().getEmail()
+                ))
+                .toList();
     }
 
 
