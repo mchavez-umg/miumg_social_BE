@@ -1,5 +1,4 @@
 package com.miumg.redsocial_BE.services;
-import com.miumg.redsocial_BE.dtos.UsuarioAmigoDTO;
 import com.miumg.redsocial_BE.models.Publicacion;
 import com.miumg.redsocial_BE.models.PublicacionLike;
 import com.miumg.redsocial_BE.models.Usuario;
