@@ -11,6 +11,7 @@ import java.util.Optional;
 public interface PublicacionLikeRepository extends JpaRepository<PublicacionLike, Integer> {
     long countByPublicacion_Id(Integer publicacionId);
     long count();
+    long countByType(Integer type);
     Optional<PublicacionLike> findByUsuarioIdAndPublicacionId(Integer usuarioId, Integer publicacionId);
 
     List<PublicacionLike> findByPublicacion_Id(Integer publicacionId);

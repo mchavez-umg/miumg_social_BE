@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UsuarioDTO {
     private Integer id;
+    private String imageProfile;
     private String username;
     private String password;
     private String email;

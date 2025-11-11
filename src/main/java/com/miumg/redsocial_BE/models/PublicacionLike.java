@@ -20,12 +20,15 @@ public class PublicacionLike implements Serializable {
     private static final long serialVersionUID = 4L;
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column(name="id", nullable=false, unique=true)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false, unique = true)
     private Integer id;
 
-    @Column(name="likedDate")
+    @Column(name = "likedDate")
     private LocalDateTime likedDate;
+
+    @Column(name="type")
+    private Integer type;
 
     @ManyToOne
     @JoinColumn(name = "usuario_id")

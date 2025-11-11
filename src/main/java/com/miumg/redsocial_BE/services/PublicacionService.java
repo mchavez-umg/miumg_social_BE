@@ -105,7 +105,11 @@ public class PublicacionService {
     }
 
     public long getAllLikes() {
-        return publicacionLikeRepository.count();
+        return publicacionLikeRepository.countByType(1);
+    }
+
+    public long getAllDisLikes() {
+        return publicacionLikeRepository.countByType(0);
     }
 
     public List<PublicacionUsersLikeDTO> getLikesByPublicacionId(Integer publicacionId) {

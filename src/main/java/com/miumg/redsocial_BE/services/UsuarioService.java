@@ -76,6 +76,7 @@ public class UsuarioService {
 
     public Usuario saveUsuario(UsuarioDTO usuarioDTO){
         Usuario usuario = new Usuario();
+        usuario.setImageProfile(usuarioDTO.getImageProfile());
         usuario.setUsername(usuarioDTO.getUsername());
         usuario.setEmail(usuarioDTO.getEmail());
         usuario.setName(usuarioDTO.getName());

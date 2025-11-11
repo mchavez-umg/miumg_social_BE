@@ -42,6 +42,9 @@ public class Usuario implements Serializable {
     @JsonManagedReference
     private List<Publicacion> publicaciones;
 
+    @Column(name = "imageProfile", columnDefinition = "LONGTEXT")
+    private String imageProfile;
+
     @OneToMany(mappedBy = "usuarioRemitente")
     @JsonManagedReference
     private List<SolicitudAmistad> solicitudesEnviadas;

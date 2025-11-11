@@ -96,6 +96,11 @@ public class PublicacionController {
         return publicacionService.getAllLikes();
     }
 
+    @GetMapping("dislikes/total")
+    public long getTotalDisLikes() {
+        return publicacionService.getAllDisLikes();
+    }
+
     @PostMapping("/like")
     public ResponseEntity<?> toggleLike(@RequestBody PublicacionLikeDTO dto) {
         Usuario usuario = usuarioService.getById(dto.getUserId())
@@ -109,6 +114,22 @@ public class PublicacionController {
             return ResponseEntity.ok("Like eliminado");
         } else {
             return ResponseEntity.ok("Like agregado");
+        }
+    }
+
+    @PostMapping("/nolike")
+    public ResponseEntity<?> toggleNoLike(@RequestBody PublicacionLikeDTO dto) {
+        Usuario usuario = usuarioService.getById(dto.getUserId())
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        Publicacion publicacion = publicacionService.getById(dto.getPublicacionId())
+                .orElseThrow(() -> new RuntimeException("Publicación no encontrada"));
+
+        PublicacionLike result = publicacionLikeService.toggleNoLike(usuario, publicacion);
+
+        if (result == null) {
+            return ResponseEntity.ok("disLike eliminado");
+        } else {
+            return ResponseEntity.ok("disLike agregado");
         }
     }
 

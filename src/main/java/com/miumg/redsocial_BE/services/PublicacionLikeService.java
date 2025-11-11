@@ -25,6 +25,7 @@ public class PublicacionLikeService {
         } else {
             PublicacionLike newLike = new PublicacionLike();
             newLike.setUsuario(usuario);
+            newLike.setType(1);
             newLike.setPublicacion(publicacion);
             newLike.setLikedDate(LocalDateTime.now());
             return publicacionLikeRepository.save(newLike);
@@ -33,6 +34,23 @@ public class PublicacionLikeService {
 
     public List<PublicacionLike> getInfoUsersByPublicacionId(Integer id){
         return publicacionLikeRepository.findByPublicacion_Id(id);
+    }
+
+    public PublicacionLike toggleNoLike(Usuario usuario, Publicacion publicacion) {
+        Optional<PublicacionLike> existingLike =
+                publicacionLikeRepository.findByUsuarioIdAndPublicacionId(usuario.getId(), publicacion.getId());
+
+        if (existingLike.isPresent()) {
+            publicacionLikeRepository.delete(existingLike.get());
+            return null;
+        } else {
+            PublicacionLike newLike = new PublicacionLike();
+            newLike.setUsuario(usuario);
+            newLike.setType(0);
+            newLike.setPublicacion(publicacion);
+            newLike.setLikedDate(LocalDateTime.now());
+            return publicacionLikeRepository.save(newLike);
+        }
     }
 
 }
